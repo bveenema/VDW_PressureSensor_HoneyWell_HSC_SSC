@@ -18,6 +18,7 @@ void setup()
 {
     // Initialize Serial
     Serial.begin(57000);
+    delay(1000);
 
     /// Initialize Pressure Sensor
     // Pin: A1
@@ -26,6 +27,16 @@ void setup()
     // Voltage Supply: 3300 mV
     // Sample Rate: 10 ms
     PressureSensor.init(A1, 5000, 0, 3300, 10);
+
+    // Allow Time for Pressure Sensor to settle
+    uint InitialTime = millis();
+    while(millis() - InitialTime < 500)
+    {
+        PressureSensor.update();
+    }
+
+    // Zero the pressure
+    PressureSensor.zero();
 }
 
 void loop()
